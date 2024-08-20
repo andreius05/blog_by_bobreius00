@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+<form action="{{ url_for('pick_room') }}" method="post">
+    {{ form.hidden_tag() }}
+    <div>
+        {{ form.room.label }}
+        {{ form.room() }}
+        {% if form.room.errors %}
+            <ul class="errors">
+                {% for error in form.room.errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+    <div>
+        {{ form.submit() }}
+    </div>
+</form>
+{% endblock %}

@@ -1,0 +1,226 @@
+body {
+  background: #1c1c1c; /* Темный фон для минималистичного вида */
+  color: #f8f8f8; /* Светлый текст для контраста */
+  margin-top: 6rem;
+  font-family: 'Roboto', sans-serif; /* Современный шрифт */
+  line-height: 1.8; /* Увеличенный межстрочный интервал для читабельности */
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #ffffff; /* Белый цвет заголовков */
+  margin-bottom: 1.5rem;
+  font-weight: 700; /* Более жирный шрифт */
+}
+
+.bg-steel {
+  background-color: #2b2b2b; /* Темно-серый для навбара */
+}
+
+.site-header .navbar-nav .nav-link {
+  color: #b0b0b0; /* Серый цвет для ссылок */
+  font-weight: 600;
+  font-size: 1.2rem; /* Увеличенный размер шрифта для ссылок */
+  transition: color 0.3s ease;
+}
+
+.site-header .navbar-nav .nav-link:hover {
+  color: #ffffff; /* Белый цвет при наведении */
+}
+
+.site-header .navbar-nav .nav-link.active {
+  font-weight: 700; /* Более жирный шрифт для активных ссылок */
+}
+
+.content-section {
+  background: #2e2e2e; /* Темно-серый для контента */
+  padding: 40px 50px; /* Увеличенные отступы */
+  border: 1px solid #444444; /* Более темная рамка */
+  border-radius: 10px; /* Более округлые углы */
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3); /* Глубокая тень */
+  margin-bottom: 40px;
+}
+
+.article-title {
+  color: #f0f0f0; /* Светло-серый для заголовков статей */
+  font-size: 2.5rem; /* Увеличенный размер шрифта */
+  font-weight: 600;
+}
+
+a.article-title:hover {
+  color: #ffffff; /* Белый при наведении */
+  text-decoration: underline; /* Подчёркивание для акцента */
+}
+
+.article-content {
+  white-space: pre-line;
+  line-height: 1.9; /* Увеличенный межстрочный интервал */
+  font-size: 1.2rem; /* Чуть больший размер текста */
+  color: #d0d0d0; /* Светло-серый текст */
+}
+
+.article-img {
+  height: 100px;
+  width: 100px;
+  margin-right: 25px;
+  border-radius: 50%; /* Круглые изображения */
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2); /* Легкая тень */
+}
+
+.article-metadata {
+  padding-bottom: 12px;
+  margin-bottom: 12px;
+  border-bottom: 1px solid #595959;
+  font-size: 1rem;
+  color: #a0a0a0; /* Серый для метаданных */
+}
+
+.article-metadata a:hover {
+  color: #ffffff; /* Белый при наведении */
+  text-decoration: none;
+}
+
+.article-svg {
+  width: 35px; /* Увеличенный размер для современных иконок */
+  height: 35px;
+  vertical-align: middle;
+  fill: #b0b0b0; /* Серый для иконок */
+}
+
+.account-img {
+  height: 175px; /* Больший размер для фото профиля */
+  width: 175px;
+  margin-right: 25px;
+  margin-bottom: 20px;
+  border-radius: 50%;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+.account-heading {
+  font-size: 3rem; /* Большой размер шрифта для заголовков аккаунта */
+  color: #ffffff;
+  margin-bottom: 0.8rem;
+}
+
+button, input[type="submit"] {
+  background-color: #444444; /* Серый для кнопок */
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  padding: 12px 25px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover, input[type="submit"]:hover {
+  background-color: #5c5c5c; /* Более светлый серый при наведении */
+}
+
+form {
+  margin-top: 2.5rem;
+}
+
+.form-control {
+  background: #2b2b2b; /* Темный фон для полей ввода */
+  border: 1px solid #444444; /* Легкая рамка */
+  border-radius: 6px;
+  padding: 12px;
+  font-size: 1.1rem;
+  color: #f8f8f8; /* Светлый текст */
+}
+
+.form-control:focus {
+  border-color: #555555; /* Серый цвет рамки при фокусе */
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.2); /* Легкая тень при фокусе */
+}
+
+.form-control-label {
+  color: #b0b0b0; /* Серый цвет для меток форм */
+  font-weight: 600;
+}
+.modal-title{
+color:black;
+}
+.modal-body{
+color:black;
+}
+select {
+    min-width: 200px; /* Задайте подходящее значение */
+    padding: 5px;
+    font-size: 16px;
+}
+/* Чат-окно */
+.message-box {
+  background-color: #2e2e2e; /* Темный фон */
+  border: 1px solid #444444; /* Более темная рамка */
+  border-radius: 10px; /* Округлые углы */
+  padding: 20px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3); /* Глубокая тень */
+  margin-bottom: 40px;
+}
+
+.messages {
+  height: 300px;
+  overflow-y: scroll;
+  background: #1c1c1c; /* Темный фон для зоны сообщений */
+  border: 1px solid #444444; /* Темная рамка */
+  padding: 15px;
+  border-radius: 10px;
+  color: #f8f8f8; /* Светлый текст */
+  font-size: 1.1rem; /* Чуть больший размер текста */
+  line-height: 1.6; /* Увеличенный межстрочный интервал */
+}
+
+.inputs {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+
+input[type="text"] {
+  padding: 12px;
+  border: 1px solid #444444; /* Темная рамка */
+  border-radius: 10px; /* Округлые углы */
+  flex-grow: 1;
+  background: #2b2b2b; /* Темный фон для поля ввода */
+  color: #f8f8f8; /* Светлый текст */
+}
+
+#send {
+  padding: 12px 20px;
+  background-color: #4CAF50; /* Зеленый цвет кнопки */
+  color: white;
+  border: none;
+  border-radius: 10px; /* Округлые углы */
+  cursor: pointer;
+  margin-left: 10px;
+  transition: background-color 0.3s ease;
+}
+
+#send:hover {
+  transition:0.5;
+  background-color: purple; /* Более светлый зеленый при наведении */
+}
+.contain{
+ width: 100%;
+height:50%;
+  margin: 0 auto;
+  padding: 20px;
+}
+.account-heading{
+color:black;
+}
+.user-info-section {
+   height:50%
+  background-color: #ffffff; /* Белый фон */
+  color: #000000; /* Черный текст */
+  border-radius: 12px; /* Увеличенный радиус скругления */
+  padding: 40px; /* Увеличенные отступы */
+  margin-bottom: 50px; /* Большой отступ снизу */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Более выраженная тень */
+  display: flex; /* Используем flexbox для выравнивания контента */
+  align-items: center;
+}
+.del btn-secondary btn-sm mt-1 mb-1{
+
+}
