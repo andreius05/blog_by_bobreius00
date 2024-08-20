@@ -269,3 +269,19 @@ def search():
             flash('This user is not exist')
             return redirect(url_for('search'))
     return render_template('search.html',form=form)
+
+
+@app.route("/followers/<username>")
+@login_required
+def followers(username):
+    user = User.query.filter_by(username=username).first_or_404()
+    users = [f.follower for f in user.followers.all()]
+    return render_template('user_list.html', users=users, user=user)
+
+
+@app.route("/followed/<username>")
+@login_required
+def followed(username):
+    user = User.query.filter_by(username=username).first_or_404()
+    users = [f.followed for f in user.followed.all()]
+    return render_template('user_list.html', users=users, user=user)
