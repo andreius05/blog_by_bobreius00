@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+{% for user in users %}
+    <article class="media content-section">
+        <img class="rounded-circle article-img" src="{{ url_for('static', filename='pictures/' + user.image_file) }}" alt="">
+        <div class="media-body">
+            <div class="article-metadata">
+                <a class="mr-2" href="{{ url_for('user_info', username=user.username) }}">{{ user.username }}</a>
+            </div>
+            <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('chat',recipient_username=user.username) }}">Chat him</a>
+        </div>
+    </article>
+{% endfor %}
+{% endblock %}

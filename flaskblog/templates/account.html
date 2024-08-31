@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="content-section">
+  <div class="media">
+    <img class="rounded-circle account-img" src="{{ url_for('static', filename='pictures/' + current_user.image_file) }}">
+    <div class="media-body">
+      <h2 class="account-heading">{{ current_user.username }}</h2>
+      <p class="text-secondary">{{ current_user.email }}</p>
+
+
+      <a href="{{ url_for('followers',username=current_user.username)}}"><strong>Followers:</strong> {{ current_user.followers.count() }}</a>
+      <a href="{{ url_for('followed',username=current_user.username) }}"><strong>Followed:</strong> {{ current_user.followed.count() }}</a>
+x    </div>
+  </div>
+  <a href="{{ url_for('update_account') }}">Update account</a>
+</div>
+
+{% endblock %}

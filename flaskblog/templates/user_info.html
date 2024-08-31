@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="contain">
+  <div class="user-info-section">
+    <div class="media">
+      <img class="rounded-circle account-img" src="{{ url_for('static', filename='pictures/' + user.image_file) }}" alt="Profile Image">
+      <div class="media-body">
+        <h2 class="account-heading">{{ user.username }}</h2>
+        <a href="{{ url_for('followers',username=user.username)}}"><strong>Followers:</strong> {{ user.followers.count() }}</a>
+        <a href="{{ url_for('followed',username=user.username) }}"><strong>Followed:</strong> {{ user.followed.count() }}</a>
+      </div>
+      {% if current_user.username==user.username %}
+
+        {% else %}
+            {% if current_user.is_following(user) %}
+                <a href="{{ url_for('unfollow', username=user.username) }}" class="btn btn-danger">Unfollow</a>
+              {% else %}
+                <a href="{{ url_for('follow', username=user.username) }}" class="btn btn-primary">Follow</a>
+              {% endif %}
+            <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('chat',recipient_username=user.username) }}">Chat him</a>
+        {% endif %}
+    </div>
+  </div>
+
+  <div class="user-posts-section">
+    {% for post in posts %}
+    <div class="post-card">
+      <div class="media">
+        <img class="rounded-circle account-img" src="{{ url_for('static', filename='pictures/' + user.image_file) }}" alt="Profile Image">
+        <div class="media-body">
+          <h2 class="post-author">{{ post.author.username }}</h2>
+          <p class="post-content">{{ post.content }}</p>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

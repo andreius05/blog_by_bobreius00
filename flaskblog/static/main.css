@@ -1,0 +1,241 @@
+body {
+  background: #1c1c1c; /* Темный фон для минималистичного вида */
+  color: #f8f8f8; /* Светлый текст для контраста */
+  margin-top: 6rem;
+  font-family: 'Roboto', sans-serif; /* Современный шрифт */
+  line-height: 1.8; /* Увеличенный межстрочный интервал для читабельности */
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #ffffff; /* Белый цвет заголовков */
+  margin-bottom: 1.5rem;
+  font-weight: 700; /* Более жирный шрифт */
+}
+
+.bg-steel {
+  background-color: #2b2b2b; /* Темно-серый для навбара */
+}
+
+.site-header .navbar-nav .nav-link {
+  color: #b0b0b0; /* Серый цвет для ссылок */
+  font-weight: 600;
+  font-size: 1.2rem; /* Увеличенный размер шрифта для ссылок */
+  transition: color 0.3s ease;
+}
+
+.site-header .navbar-nav .nav-link:hover {
+  color: #ffffff; /* Белый цвет при наведении */
+}
+
+.site-header .navbar-nav .nav-link.active {
+  font-weight: 700; /* Более жирный шрифт для активных ссылок */
+}
+
+.content-section {
+  background: #2e2e2e; /* Темно-серый для контента */
+  padding: 40px 50px; /* Увеличенные отступы */
+  border: 1px solid #444444; /* Более темная рамка */
+  border-radius: 10px; /* Более округлые углы */
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3); /* Глубокая тень */
+  margin-bottom: 40px;
+}
+
+.article-title {
+  color: #f0f0f0; /* Светло-серый для заголовков статей */
+  font-size: 2.5rem; /* Увеличенный размер шрифта */
+  font-weight: 600;
+}
+
+a.article-title:hover {
+  color: #ffffff; /* Белый при наведении */
+  text-decoration: underline; /* Подчёркивание для акцента */
+}
+
+.article-content {
+  white-space: pre-line;
+  line-height: 1.9; /* Увеличенный межстрочный интервал */
+  font-size: 1.2rem; /* Чуть больший размер текста */
+  color: #d0d0d0; /* Светло-серый текст */
+}
+
+.article-img {
+  height: 100px;
+  width: 100px;
+  margin-right: 25px;
+  border-radius: 50%; /* Круглые изображения */
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2); /* Легкая тень */
+}
+
+.article-metadata {
+  padding-bottom: 12px;
+  margin-bottom: 12px;
+  border-bottom: 1px solid #595959;
+  font-size: 1rem;
+  color: #a0a0a0; /* Серый для метаданных */
+}
+
+.article-metadata a:hover {
+  color: #ffffff; /* Белый при наведении */
+  text-decoration: none;
+}
+
+.article-svg {
+  width: 35px; /* Увеличенный размер для современных иконок */
+  height: 35px;
+  vertical-align: middle;
+  fill: #b0b0b0; /* Серый для иконок */
+}
+
+.account-img {
+  height: 175px; /* Больший размер для фото профиля */
+  width: 175px;
+  margin-right: 25px;
+  margin-bottom: 20px;
+  border-radius: 50%;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+.account-heading {
+  font-size: 3rem; /* Большой размер шрифта для заголовков аккаунта */
+  color: #ffffff;
+  margin-bottom: 0.8rem;
+}
+
+button, input[type="submit"] {
+  background-color: #444444; /* Серый для кнопок */
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  padding: 12px 25px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover, input[type="submit"]:hover {
+  background-color: #5c5c5c; /* Более светлый серый при наведении */
+}
+
+form {
+  margin-top: 2.5rem;
+}
+
+.form-control {
+  background: #2b2b2b; /* Темный фон для полей ввода */
+  border: 1px solid #444444; /* Легкая рамка */
+  border-radius: 6px;
+  padding: 12px;
+  font-size: 1.1rem;
+  color: #f8f8f8; /* Светлый текст */
+}
+
+.form-control:focus {
+  border-color: #555555; /* Серый цвет рамки при фокусе */
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.2); /* Легкая тень при фокусе */
+}
+
+.form-control-label {
+  color: #b0b0b0; /* Серый цвет для меток форм */
+  font-weight: 600;
+}
+.modal-title{
+color:black;
+}
+.modal-body{
+color:black;
+}
+select {
+    min-width: 200px; /* Задайте подходящее значение */
+    padding: 5px;
+    font-size: 16px;
+}
+.sent{
+       background-color: #007bff; /* Синий фон для сообщений отправителя */
+        color: white; /* Белый цвет текста для контраста */
+        align-self: flex-end;
+        margin-left: auto;
+        text-align: right;
+}
+.received{
+         background-color: #ffffff; /* Белый фон для сообщений получателя */
+        color: black; /* Черный цвет текста для контраста */
+        align-self: flex-start;
+        margin-right: auto;
+        text-align: left;
+}
+/* Стили для основного контейнера чата */
+#chat-container {
+    display: flex;
+    flex-direction: column;
+    height: 500px; /* Высота контейнера чата */
+    overflow-y: auto; /* Прокрутка при переполнении */
+    border: 1px solid #444444; /* Темная граница вокруг чата */
+    padding: 10px;
+    background-color: #2e2e2e; /* Темный цвет фона чата для соответствия общей гамме */
+    border-radius: 5px; /* Закругленные углы контейнера */
+}
+
+/* Стили для сообщений в текстовом поле */
+textarea#chat {
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+    border: none;
+    background-color: #2e2e2e; /* Темный фон текстового поля */
+    overflow-y: auto; /* Прокрутка при переполнении */
+    border-radius: 5px; /* Закругленные углы */
+    font-family: Arial, sans-serif; /* Шрифт текста */
+    font-size: 14px; /* Размер шрифта */
+    color: #f8f8f8; /* Светлый текст для контраста */
+    white-space: pre-wrap; /* Сохраняет пробелы и переносы строк */
+}
+
+/* Стили для сообщений */
+.message {
+    margin-bottom: 10px; /* Отступ между сообщениями */
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #444444; /* Темно-серый фон сообщения */
+    color: #f8f8f8; /* Светлый текст сообщения */
+    display: flex;
+    align-items: center;
+}
+
+/* Стили для отправителя */
+.message-sender {
+    font-weight: bold;
+    color: #00bfff; /* Яркий синий цвет для текста отправителя */
+}
+
+/* Стили для временной метки */
+.message-timestamp {
+    font-size: 0.8em;
+    color: #aaa;
+    margin-right: 10px; /* Отступ справа от временной метки */
+}
+
+/* Стили для тела сообщения */
+.message-body {
+    flex: 1; /* Сообщение занимает оставшееся пространство */
+    padding: 5px;
+    border-radius: 5px;
+    background-color: #444444; /* Темный фон для текста сообщения */
+}
+/* Стили для заголовка чата */
+.chat-header {
+    display: flex;
+    align-items: center;
+}
+
+.chat-header .avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+    object-fit: cover;
+}
+
+.chat-header span {
+    font-size: 1.5em;
+    font-weight: bold;
+}
