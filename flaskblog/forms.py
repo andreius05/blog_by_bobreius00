@@ -6,6 +6,18 @@ from flask_wtf.file import FileField,FileAllowed
 from flask_login import current_user
 
 
+class ResetPasswordForm(FlaskForm):
+    password = PasswordField('Password', validators=[DataRequired()])
+    password2 = PasswordField(
+        'Repeat Password', validators=[DataRequired(), equal_to('password')])
+    submit = SubmitField('Request Password Reset')
+
+class ResetPasswordFormRequest(FlaskForm):
+    email=StringField('Email',validators=[DataRequired(),Email()])
+    submit=SubmitField('Submit')
+
+
+
 class RegisterForm(FlaskForm):
     username=StringField('username',validators=[DataRequired(),Length(min=2,max=60)])
     email=StringField('email',validators=[DataRequired(),Email()])
@@ -32,23 +44,7 @@ class LoginForm(FlaskForm):
     submit = SubmitField('Log in')
 
 
-class CreateRoom(FlaskForm):
-    title=StringField("Chat's name",validators=[DataRequired()])
-    submit = SubmitField('Create chat')
 
-
-    def validate_title(self,title):
-        user=Room.query.filter_by(title=title.data).first()
-        if user:
-            raise ValidationError("This room is already exist")
-
-class PickRoom(FlaskForm):
-    room=SelectField('Pick room', choices=[], coerce=str)
-    submit = SubmitField('Pick')
-
-    def validate_room(self, field):
-        if field.data == "Pick room":
-            raise ValidationError("Please pick room that exist")
 
 class UpdateAccount(FlaskForm):
     username = StringField('username', validators=[DataRequired(), Length(min=2, max=60)])

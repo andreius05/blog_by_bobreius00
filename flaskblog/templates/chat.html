@@ -48,7 +48,11 @@ $(document).ready(function() {
             socket.emit('text', { msg: text, recipient: recipientUsername });
         }
     }
-
+    socket.on('new_notification', function(data) {
+    const notificationElement = document.createElement('div');
+    notificationElement.textContent = data.msg;
+    document.getElementById('notifications').appendChild(notificationElement);
+});
     $('#text').on('keypress', function(e) {
         if (e.key === 'Enter') {
             e.preventDefault();

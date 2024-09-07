@@ -3,7 +3,8 @@ from authlib.jose import jwt
 from flaskblog import db, login_manager, app
 from flask_login import UserMixin
 from itsdangerous import URLSafeTimedSerializer as Serializer
-
+import jwt
+from time import time
 
 
 @login_manager.user_loader
@@ -59,6 +60,21 @@ class User(db.Model, UserMixin):
     def is_followed_by(self, user):
         return self.followers.filter_by(follower_id=user.id).first() is not None
 
+    def get_reset_password_token(self, expires_in=600):
+        return jwt.encode(
+            {'reset_password': self.id, 'exp': time() + expires_in},
+            app.config['SECRET_KEY'], algorithm='HS256')
+
+    @staticmethod
+    def verify_reset_password_token(token):
+        try:
+            id = jwt.decode(token, app.config['SECRET_KEY'],
+                            algorithms=['HS256'])['reset_password']
+        except:
+            return
+        return db.session.get(User, id)
+
+    
     def __repr__(self):
         return f"User('{self.username}', '{self.email}', '{self.image_file}')"
 
@@ -70,6 +86,7 @@ class Message(db.Model):
     sender_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     recipient_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     is_read=db.Column(db.Boolean,default=False)
+
 
     sender = db.relationship('User', foreign_keys=[sender_id], back_populates='sent_messages')
     recipient = db.relationship('User', foreign_keys=[recipient_id], back_populates='received_messages')

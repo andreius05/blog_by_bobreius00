@@ -1,19 +1,32 @@
 import datetime
 
-from flaskblog import app,db,bcrypt,login_manager,socketio
+from flaskblog import app,db,bcrypt,login_manager,socketio,mail,cache
 from flask import render_template,url_for,redirect,flash,abort,request,session
 from flask_login import current_user,login_user,login_required,logout_user
 from flaskblog.models import User,Post,Message
-from flaskblog.forms import RegisterForm,LoginForm,CreateRoom,PickRoom,UpdateAccount,CreatePost,UpdPost,SearchForm,MessageForm
+from flaskblog.forms import RegisterForm,LoginForm,UpdateAccount,CreatePost,UpdPost,SearchForm,MessageForm,ResetPasswordFormRequest,ResetPasswordForm
 from flask_socketio import join_room,leave_room,emit
 import secrets
 import os
 from  PIL import Image
 from sqlalchemy import or_,and_
+from flaskblog.emails import send_email
+
+#ERRRORS
+@app.errorhandler(404)
+def not_find_error(error):
+    print("SJHDHSJDHJHSD")
+    return render_template('404error.html'),404
+
+
+@app.errorhandler(500)
+def server_bug_error(error):
+    print("SOSIIIIII")
+    return render_template('500error.html'),500
 
 
 
-
+#ERRORS
 @app.route("/")
 def home():
     page = request.args.get('page', 1, type=int)
@@ -24,6 +37,39 @@ def home():
 @app.route("/about")
 def about():
     return render_template('about.html')
+
+
+
+
+@app.route('/reset_password_request',methods=['GET','POST'])
+def reset_password_request():
+    if current_user.is_authenticated:
+        return redirect(url_for('home'))
+    form=ResetPasswordFormRequest()
+    if form.validate_on_submit():
+       user=User.query.filter_by(email=form.email.data).first()
+       if user:
+           send_email(user)
+           flash('Check the email to reset your password')
+           return redirect(url_for('login'))
+    return render_template('reset_password_request.html',form=form,user=user)
+
+
+@app.route('/reset_password/<token>', methods=['GET', 'POST'])
+def reset_password(token):
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    user = User.verify_reset_password_token(token)
+    if not user:
+        return redirect(url_for('index'))
+    form = ResetPasswordForm()
+    if form.validate_on_submit():
+        user.set_password(form.password.data)
+        db.session.commit()
+        flash('Your password has been reset.')
+        return redirect(url_for('login'))
+    return render_template('reset_password.html', form=form)
+
 
 
 @app.route("/register",methods=['GET','POST'])
@@ -41,6 +87,7 @@ def register():
 
 
 @app.route('/login',methods=['GET','POST'])
+#@cache.cached(timeout=60)
 def login():
     if current_user.is_authenticated:
         return redirect(url_for('home'))
@@ -78,8 +125,10 @@ def chats(username):
         if recipient_id!=current_user.id:
             user_ids.add(recipient_id)
     users = User.query.filter(User.id.in_(user_ids)).all()
+
     for user in users:
         pass
+
     return render_template('chats.html',users=users)
 
 
@@ -87,7 +136,6 @@ def chats(username):
 @login_required
 def chat(recipient_username):
     recipient = User.query.filter_by(username=recipient_username).first()
-
     return render_template('chat.html', recipient=recipient)
 
 
@@ -99,20 +147,17 @@ def get_room_name(user1,user2):
 def join(message):
     recipient = User.query.filter_by(username=message['recipient']).first()
     room = get_room_name(current_user.username, message['recipient'])
-
     if not room:
         abort(403)
-
     join_room(room)
-
     messages = Message.query.filter(
         or_(
             and_(Message.sender_id == current_user.id, Message.recipient_id == recipient.id),
             and_(Message.sender_id == recipient.id, Message.recipient_id == current_user.id)
         )
     ).order_by(Message.timestamp.asc()).all()
-
     messages_data = []
+    print(f"{messages_data}")
     for message in messages:
         sender = User.query.get(message.sender_id)
         sender_username = sender.username if sender else "Unknown"
@@ -128,24 +173,7 @@ def join(message):
 
 @socketio.on('text', namespace='/chat')
 def text(message):
-    room = get_room_name(current_user.username, message['recipient'])
-
-    new_message = Message(
-        sender_id=current_user.id,
-        recipient_id=User.query.filter_by(username=message['recipient']).first().id,
-        body=message['msg']
-    )
-
-    db.session.add(new_message)
-    db.session.commit()
-
-
-
-
-
-
-@socketio.on('text', namespace='/chat')
-def text(message):
+    recipient=User.query.filter_by(username=message['recipient']).first()
     room = get_room_name(current_user.username, message['recipient'])
 
     new_message = Message(
@@ -158,7 +186,11 @@ def text(message):
     db.session.commit()
 
     emit('message', {'msg': f'{current_user.username}: {message["msg"]}'}, room=room)
-
+    if socketio.server.manager.rooms.get(room):
+        print("HE is IN THE FUCKING CHAT")
+        emit('message', {'msg': f'{current_user.username}: {message["msg"]}'}, room=room)
+    else:
+        emit('new_notification', {'msg': f'Новое сообщение от {current_user.username}'}, room=recipient.username)
 
 @socketio.on('leave', namespace='/chat')
 def leave(message):

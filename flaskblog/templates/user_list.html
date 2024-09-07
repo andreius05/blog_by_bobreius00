@@ -6,9 +6,10 @@
         <div class="media-body">
             <div class="article-metadata">
                 <a class="mr-2" href="{{ url_for('user_info', username=user.username) }}">{{ user.username }}</a>
-                <p><strong>Followers:</strong> {{ user.followers.count() }}</p>
-                <p><strong>Following:</strong> {{ user.followed.count() }}</p>
+
             </div>
+            <a href="{{ url_for('followers',username=user.username) }}"><strong>Followers:</strong> {{ user.followers.count() }}</a><br>
+                <a href="{{ url_for('followed',username=user.username) }}"><strong>Following:</strong> {{ user.followed.count() }}</a>
         </div>
     </article>
 {% endfor %}
