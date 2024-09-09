@@ -86,3 +86,8 @@ class SearchForm(FlaskForm):
 class MessageForm(FlaskForm):
     content=TextAreaField('Content',validators=[DataRequired()])
     submit=SubmitField('Send',render_kw={"id": "send-button", "type": "submit"})
+
+
+class CommentForm(FlaskForm):
+    content=TextAreaField('Content',validators=[DataRequired()])
+    submit=SubmitField('Send')

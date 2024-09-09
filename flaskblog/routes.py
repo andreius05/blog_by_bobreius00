@@ -3,8 +3,8 @@ import datetime
 from flaskblog import app,db,bcrypt,login_manager,socketio,mail,cache
 from flask import render_template,url_for,redirect,flash,abort,request,session
 from flask_login import current_user,login_user,login_required,logout_user
-from flaskblog.models import User,Post,Message
-from flaskblog.forms import RegisterForm,LoginForm,UpdateAccount,CreatePost,UpdPost,SearchForm,MessageForm,ResetPasswordFormRequest,ResetPasswordForm
+from flaskblog.models import User,Post,Message,Comment
+from flaskblog.forms import RegisterForm,LoginForm,UpdateAccount,CreatePost,UpdPost,SearchForm,MessageForm,ResetPasswordFormRequest,ResetPasswordForm,CommentForm
 from flask_socketio import join_room,leave_room,emit
 import secrets
 import os
@@ -253,8 +253,22 @@ def create_post():
 
 @app.route("/post/<int:post_id>",methods=['GET','POST'])
 def post(post_id):
+    form=CommentForm()
     post=Post.query.get_or_404(post_id)
-    return render_template('post.html',post=post)
+    if form.validate_on_submit():
+        if current_user.is_authenticated:
+            comment=Comment(author_id=current_user.id,content=form.content.data,post_id=post_id)
+            db.session.add(comment)
+            db.session.commit()
+            return redirect(url_for('post',post_id=post_id))
+        flash('You need to be logged to comment','success')
+    comments = Comment.query.filter_by(post_id=post_id).all()
+    return render_template('post.html',post=post,comments=comments,form=form)
+
+
+
+
+#
 
 
 

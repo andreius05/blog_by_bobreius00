@@ -29,7 +29,13 @@
         <img class="rounded-circle account-img" src="{{ url_for('static', filename='pictures/' + user.image_file) }}" alt="Profile Image">
         <div class="media-body">
           <h2 class="post-author">{{ post.author.username }}</h2>
+              <h2><a class="article-title" href="{{ url_for('post',post_id=post.id) }}">{{ post.title }}</a></h2>
+
           <p class="post-content">{{ post.content }}</p>
+          <button class="comment-button">
+    <i class="fa fa-comment"></i> {{ post.comments.count() }}
+</button>
+
         </div>
       </div>
     </div>

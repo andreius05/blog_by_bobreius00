@@ -239,3 +239,29 @@ textarea#chat {
     font-size: 1.5em;
     font-weight: bold;
 }
+.comment-button {
+    background-color: #f8f9fa; /* Нейтральный светлый цвет */
+    border: 1px solid #007bff; /* Голубая рамка */
+    color: #007bff; /* Цвет текста и иконки */
+    font-size: 14px;
+    padding: 5px 10px;
+    border-radius: 20px; /* Закругленные края */
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.comment-button i.fa-comment {
+    margin-right: 5px; /* Отступ справа от иконки */
+}
+
+.comment-button:hover {
+    background-color: #007bff; /* Голубая заливка при наведении */
+    color: #fff; /* Белый текст при наведении */
+    border-color: #007bff;
+}
+
+.comment-button:hover i.fa-comment {
+    color: #fff; /* Белая иконка при наведении */
+}

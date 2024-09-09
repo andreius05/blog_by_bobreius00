@@ -1,20 +1,53 @@
 {% extends "base.html" %}
 {% block content %}
 
-        <article class="media content-section">
-            <img class="rounded-circle article-img" src="{{url_for('static',filename = 'pictures/' + post.author.image_file)}}" alt="">
-  <div class="media-body">
-    <div class="article-metadata">
-      <a class="mr-2" href="#">{{ post.author.username }}</a>
-      <small class="text-muted">{{ post.date_posted.strftime('%Y-%m-%d') }}</small>
-        {% if post.author ==current_user %}
-            <a class="btn btn-secondary btn-sm mt-1 mb-1"  href="{{url_for('updatePost',post_id =post.id )}}">Update</a>
-            <a class="del btn-secondary btn-sm mt-1 mb-1"  href="{{url_for('deletePost',post_id =post.id )}}">Delete</a>
-        {% endif %}
-    </div>
-    <h2><a class="article-title" href="{{ url_for('post',post_id=post.id) }}">{{ post.title }}</a></h2>
-    <p class="article-content">{{ post.content }}</p>
-  </div>
-</article>
+    <!-- Отображение поста -->
+    <article class="media content-section">
+        <img class="rounded-circle article-img" src="{{url_for('static', filename='pictures/' + post.author.image_file)}}" alt="">
+        <div class="media-body">
+            <div class="article-metadata">
+                <a class="mr-2" href="{{ url_for('user_info',username=post.author.username) }}">{{ post.author.username }}</a>
+                <small class="text-muted">{{ post.date_posted.strftime('%Y-%m-%d') }}</small>
+                {% if post.author == current_user %}
+                    <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{url_for('updatePost', post_id=post.id)}}">Update</a>
+                    <a class="del btn-secondary btn-sm mt-1 mb-1" href="{{url_for('deletePost', post_id=post.id)}}">Delete</a>
+                {% endif %}
+            </div>
+            <h2><a class="article-title" href="{{ url_for('post', post_id=post.id) }}">{{ post.title }}</a></h2>
+            <p class="article-content">{{ post.content }}</p>
+        </div>
+    </article>
+
+    <!-- Форма для добавления комментария -->
+    <section class="content-section">
+        <h3>Leave a Comment:</h3>
+        <form method="POST" action="">
+            {{ form.hidden_tag() }}
+            <div class="form-group">
+                {{ form.content.label(class="form-control-label") }}
+                {{ form.content(class="form-control", rows="3") }}
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </section>
+
+    <!-- Отображение комментариев -->
+    <section class="content-section">
+        <h3>Comments:</h3>
+        {% for comment in comments %}
+            <article class="media content-section">
+                <img class="rounded-circle article-img" src="{{ url_for('static', filename='pictures/default.jpg') }}" alt="">
+                <div class="media-body">
+                    <div class="article-metadata">
+                        <a class="mr-2" href="{{ url_for('user_info',username=comment.author.username) }}">{{ comment.author.username }}</a>
+                        <small class="text-muted">{{ comment.timestamp.strftime('%Y-%m-%d') }}</small>
+                    </div>
+                    <p class="article-content">{{ comment.content }}</p>
+                </div>
+            </article>
+        {% else %}
+            <p>No comments yet. Be the first to comment!</p>
+        {% endfor %}
+    </section>
 
 {% endblock %}
