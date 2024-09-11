@@ -102,8 +102,31 @@ class Post(db.Model):
     content = db.Column(db.Text, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     comments = db.relationship('Comment', backref='post', lazy='dynamic')
+    post_likes = db.relationship('Like', back_populates='post', lazy='dynamic')
+
+    def is_liking(self, user):
+        return Like.query.filter_by(post_id=self.id, man_that_likes_id=user.id).first() is not None
+
+    def like(self, user):
+        if not self.is_liking(user):
+            like = Like(man_that_likes=user, post=self)
+            db.session.add(like)
+            db.session.commit()
+
+    def unlike(self, user):
+        like = Like.query.filter_by(post_id=self.id, man_that_likes_id=user.id).first()
+        if like:
+            db.session.delete(like)
+            db.session.commit()
+
+    def get_likers(self):
+        likes = Like.query.filter_by(post_id=self.id).all()
+        likers = [User.query.get(like.man_that_likes_id) for like in likes]
+        return likers
+
     def __repr__(self):
         return f"Post('{self.title}', '{self.date_posted}')"
+
 class Comment(db.Model):
     id=db.Column(db.Integer,primary_key=True)
     content=db.Column(db.Text)
@@ -111,3 +134,15 @@ class Comment(db.Model):
     author_id=db.Column(db.Integer,db.ForeignKey('user.id'))
     post_id=db.Column(db.Integer,db.ForeignKey('post.id'))
     author = db.relationship('User', backref='comments')
+
+
+class Like(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    man_that_likes_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    post_id = db.Column(db.Integer, db.ForeignKey('post.id'))
+    man_that_likes = db.relationship('User', backref='user_likes')
+    post = db.relationship('Post', back_populates='post_likes')
+    is_liking = db.Column(db.Boolean, default=False)
+
+    def __repr__(self):
+        return f"Like('{self.man_that_likes_id}', '{self.post_id}')"

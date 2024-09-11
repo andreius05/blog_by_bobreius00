@@ -265,3 +265,23 @@ textarea#chat {
 .comment-button:hover i.fa-comment {
     color: #fff; /* Белая иконка при наведении */
 }
+/* Основной контейнер для лайков */
+.likes-container {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+
+/* Иконка лайка */
+.like-icon {
+    font-size: 18px; /* Размер иконки */
+    color: #ff4b5c; /* Цвет иконки */
+    margin-right: 5px; /* Отступ справа от иконки */
+}
+
+/* Текст с количеством лайков */
+.likes-count {
+    font-size: 14px; /* Размер шрифта */
+    color: red; /* Цвет текста */
+    font-weight: bold; /* Жирное начертание текста */
+}

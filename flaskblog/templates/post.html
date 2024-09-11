@@ -15,6 +15,22 @@
             </div>
             <h2><a class="article-title" href="{{ url_for('post', post_id=post.id) }}">{{ post.title }}</a></h2>
             <p class="article-content">{{ post.content }}</p>
+
+            <!-- Лайк кнопка -->
+            <div class="likes-container">
+                {% if current_user.is_authenticated %}
+                    {% if post.is_liking(current_user) %}
+                        <a class="like-icon" href="{{ url_for('unlike_post', post_id=post.id) }}">&#10084;Unlike</a>
+                        <a href="{{ url_for('post_likes',post_id=post.id) }}" class="likes-count">{{ post.post_likes.count() }}</a>
+                    {% else %}
+                        <a class="like-icon" href="{{ url_for('like_post', post_id=post.id) }}">&#10084;Like</a>
+                        <a href="{{ url_for('post_likes',post_id=post.id) }}" class="likes-count">{{ post.post_likes.count() }}</a>
+                    {% endif %}
+                {% else %}
+                    <p><a href="{{ url_for('login') }}">Login</a> to like this post.</p>
+                {% endif %}
+
+            </div>
         </div>
     </article>
 

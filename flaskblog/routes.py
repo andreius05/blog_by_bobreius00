@@ -262,7 +262,7 @@ def post(post_id):
             db.session.commit()
             return redirect(url_for('post',post_id=post_id))
         flash('You need to be logged to comment','success')
-    comments = Comment.query.filter_by(post_id=post_id).all()
+    comments = post.comments.order_by(Comment.timestamp.asc()).all()
     return render_template('post.html',post=post,comments=comments,form=form)
 
 
@@ -373,3 +373,25 @@ def followed(username):
     user = User.query.filter_by(username=username).first_or_404()
     users = [f.followed for f in user.followed.all()]
     return render_template('user_list.html', users=users, user=user)
+
+
+
+@app.route("/like_post/<int:post_id>")
+def like_post(post_id):
+    post=Post.query.get_or_404(post_id)
+    post.like(current_user)
+    return redirect(url_for('post',post_id=post_id))
+
+
+@app.route("/unlike_post/<int:post_id>")
+def unlike_post(post_id):
+    post=Post.query.get_or_404(post_id)
+    post.unlike(current_user)
+    return redirect(url_for('post',post_id=post_id))
+
+
+@app.route("/post_likes/<int:post_id>")
+def post_likes(post_id):
+    post=Post.query.get_or_404(post_id)
+    likers=post.get_likers()
+    return render_template('post_likes.html',likers=likers,post=post)
