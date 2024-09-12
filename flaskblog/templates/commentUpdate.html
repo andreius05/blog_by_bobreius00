@@ -1,0 +1,32 @@
+{%extends "base.html"%}
+{%block content%}
+    <div class = 'content-section'>
+        <form action="" method="post" enctype="multipart/form-data">
+            {{form.hidden_tag()}}
+            <fieldset class = 'form-group'>
+                <legend class = 'border-bottom'>Log in</legend>
+
+                <div class="form-group">
+                    {{form.content.label(class = 'form-control-label')}}
+                    {%if form.content.errors%}
+                        {{form.content(class = "form-control form-control -lg is-invalid")}}
+                        <div class="">
+                        {% for error in form.content.errors %}
+                                <span>{{error}}</span>
+                         {% endfor %}
+                        </div>
+                    {% else %}
+                        {{form.content(class = 'form-control form-control-lg')}}
+                    {%endif%}
+                </div>
+
+
+
+
+            </fieldset>
+            <div class="form-group">
+                {{form.submit(class = "btn btn-outline-info")}}
+            </div>
+        </form>
+    </div>
+{%endblock content%}

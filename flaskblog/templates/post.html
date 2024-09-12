@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 
-    <!-- Отображение поста -->
+
     <article class="media content-section">
         <img class="rounded-circle article-img" src="{{url_for('static', filename='pictures/' + post.author.image_file)}}" alt="">
         <div class="media-body">
@@ -16,7 +16,7 @@
             <h2><a class="article-title" href="{{ url_for('post', post_id=post.id) }}">{{ post.title }}</a></h2>
             <p class="article-content">{{ post.content }}</p>
 
-            <!-- Лайк кнопка -->
+
             <div class="likes-container">
                 {% if current_user.is_authenticated %}
                     {% if post.is_liking(current_user) %}
@@ -47,7 +47,7 @@
         </form>
     </section>
 
-    <!-- Отображение комментариев -->
+
     <section class="content-section">
         <h3>Comments:</h3>
         {% for comment in comments %}
@@ -60,10 +60,18 @@
                     </div>
                     <p class="article-content">{{ comment.content }}</p>
                 </div>
+                {% if comment.author.username==current_user.username %}
+            <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{url_for('commentUpdate', post_id=post.id)}}">Update</a>
+            <a class="del btn-secondary btn-sm mt-1 mb-1" href="{{url_for('commentDelete', post_id=post.id)}}">Delete</a>
             </article>
+
+        {% else %}
+        {% endif %}
         {% else %}
             <p>No comments yet. Be the first to comment!</p>
+
         {% endfor %}
+
     </section>
 
 {% endblock %}

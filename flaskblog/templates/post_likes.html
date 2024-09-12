@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-<h1>Post {{ post.title }}</h1>
+<h1>Post {{ post.title }} likes</h1>
 {% for user in likers %}
     <article class="media content-section">
         <img class="rounded-circle article-img" src="{{ url_for('static', filename='pictures/' + user.image_file) }}" alt="">

@@ -35,6 +35,10 @@
           <button class="comment-button">
     <i class="fa fa-comment"></i> {{ post.comments.count() }}
 </button>
+            <div class="likes-container">
+    <span class="like-icon">&#10084; <!-- или используйте иконку Font Awesome, например, <i class="fa fa-heart"></i> --></span>
+    <a href="{{ url_for('post_likes',post_id=post.id) }}" class="likes-count">{{ post.post_likes.count() }}</a>
+</div>
 
         </div>
       </div>

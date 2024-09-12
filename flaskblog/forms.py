@@ -91,3 +91,8 @@ class MessageForm(FlaskForm):
 class CommentForm(FlaskForm):
     content=TextAreaField('Content',validators=[DataRequired()])
     submit=SubmitField('Send')
+
+
+class CommentUpdateForm(FlaskForm):
+    content=TextAreaField('content',validators=[DataRequired()])
+    submit=SubmitField('Update')

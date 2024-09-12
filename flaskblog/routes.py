@@ -4,7 +4,7 @@ from flaskblog import app,db,bcrypt,login_manager,socketio,mail,cache
 from flask import render_template,url_for,redirect,flash,abort,request,session
 from flask_login import current_user,login_user,login_required,logout_user
 from flaskblog.models import User,Post,Message,Comment
-from flaskblog.forms import RegisterForm,LoginForm,UpdateAccount,CreatePost,UpdPost,SearchForm,MessageForm,ResetPasswordFormRequest,ResetPasswordForm,CommentForm
+from flaskblog.forms import RegisterForm,LoginForm,UpdateAccount,CreatePost,UpdPost,SearchForm,MessageForm,ResetPasswordFormRequest,ResetPasswordForm,CommentForm,CommentUpdateForm
 from flask_socketio import join_room,leave_room,emit
 import secrets
 import os
@@ -395,3 +395,25 @@ def post_likes(post_id):
     post=Post.query.get_or_404(post_id)
     likers=post.get_likers()
     return render_template('post_likes.html',likers=likers,post=post)
+
+
+@app.route("/commentUpdate/<int:post_id>",methods=['GET','POST'])
+def commentUpdate(post_id):
+    form=CommentUpdateForm()
+    comment = Comment.query.get_or_404(post_id)
+    if form.validate_on_submit():
+        comment.content=form.content.data
+        db.session.commit()
+        flash('Your comment was updated','success')
+        return redirect(url_for('post',post_id=post_id))
+    form.content.data=comment.content
+    return render_template('commentUpdate.html',post_id=post_id,form=form,comment=comment)
+
+
+@app.route("/commentDelete/<int:post_id>")
+def commentDelete(post_id):
+    comment=Comment.query.get(post_id)
+    db.session.delete(comment)
+    db.session.commit()
+    flash('Your comment was deleted ','success')
+    return redirect(url_for('post',post_id=post_id))
