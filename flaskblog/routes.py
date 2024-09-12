@@ -374,7 +374,11 @@ def followed(username):
     users = [f.followed for f in user.followed.all()]
     return render_template('user_list.html', users=users, user=user)
 
-
+@app.route("/like_post_home/<int:post_id>")
+def like_post_home(post_id):
+    post=Post.query.get(post_id)
+    post.like(current_user)
+    return redirect(url_for('home'))
 
 @app.route("/like_post/<int:post_id>")
 def like_post(post_id):
@@ -389,6 +393,13 @@ def unlike_post(post_id):
     post.unlike(current_user)
     return redirect(url_for('post',post_id=post_id))
 
+
+
+@app.route("/unlike_post_home/<int:post_id>")
+def unlike_post_home(post_id):
+    post=Post.query.get_or_404(post_id)
+    post.unlike(current_user)
+    return redirect(url_for('home'))
 
 @app.route("/post_likes/<int:post_id>")
 def post_likes(post_id):
