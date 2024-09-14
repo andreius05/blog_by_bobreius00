@@ -79,7 +79,7 @@ class UpdPost(FlaskForm):
 
 
 class SearchForm(FlaskForm):
-    username=StringField('Search someone',validators=[DataRequired()])
+    guy_searched=StringField('Search someone',validators=[DataRequired()])
     submit=SubmitField('Search')
 
 

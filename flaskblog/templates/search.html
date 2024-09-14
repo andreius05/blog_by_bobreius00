@@ -6,16 +6,16 @@
             <fieldset class = 'form-group'>
                 <legend class = 'border-bottom'>Search bobrs</legend>
                 <div class="form-group">
-                    {{form.username.label(class = 'form-control-label')}}
-                    {%if form.username.errors%}
-                        {{form.username(class = "form-control form-control -lg is-invalid")}}
+                    {{form.guy_searched.label(class = 'form-control-label')}}
+                    {%if form.guy_searched.errors%}
+                        {{form.guy_searched(class = "form-control form-control -lg is-invalid")}}
                         <div class="">
-                        {% for error in username.title.errors %}
+                        {% for error in guy_searched.title.errors %}
                                 <span>{{error}}</span>
                          {% endfor %}
                         </div>
                     {% else %}
-                        {{form.username(class = 'form-control form-control-lg')}}
+                        {{form.guy_searched(class = 'form-control form-control-lg')}}
                     {%endif%}
                 </div>
 

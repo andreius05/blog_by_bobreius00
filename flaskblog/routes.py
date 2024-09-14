@@ -347,12 +347,12 @@ def unfollow(username):
 @login_required
 def search():
     form=SearchForm()
-
     if form.validate_on_submit():
-        user=User.query.filter_by(username=form.username.data).first()
-        if user:
-            flash('Here is guy that you searched','success')
-            return redirect(url_for('user_info',username=user.username))
+        search_tag=form.guy_searched.data
+        users=User.query.filter(User.username.ilike(f"%{search_tag}%")).all()
+        if users:
+            flash('Here is guys that you searched','success')
+            return render_template('searched.html',users=users)
         else:
             flash('This user is not exist')
             return redirect(url_for('search'))
