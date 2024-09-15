@@ -383,6 +383,20 @@ def like_post(post_id):
     return redirect(url_for('post',post_id=post_id))
 
 
+@app.route("/like_post_home/<int:post_id>",methods=['GET','POST'])
+def like_post_home(post_id):
+    post = Post.query.get_or_404(post_id)
+    post.like(current_user)
+    return redirect(url_for('home'))
+
+
+@app.route("/unlike_post_home/<int:post_id>",methods=['GET','POST'])
+def unlike_post_home(post_id):
+    post = Post.query.get_or_404(post_id)
+    post.unlike(current_user)
+    return redirect(url_for('home'))
+
+
 @app.route("/unlike_post/<int:post_id>")
 def unlike_post(post_id):
     post=Post.query.get_or_404(post_id)
