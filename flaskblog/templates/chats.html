@@ -7,7 +7,8 @@
             <div class="article-metadata">
                 <a class="mr-2" href="{{ url_for('user_info', username=user.username) }}">{{ user.username }}</a>
             </div>
-            <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('chat',recipient_username=user.username) }}">Chat him</a>
+
+            <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('chat',recipient_username=user.username) }}">{{ last_sender }}:{{ last_message }}</a>
         </div>
     </article>
 {% endfor %}

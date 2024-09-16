@@ -127,9 +127,29 @@ def chats(username):
     users = User.query.filter(User.id.in_(user_ids)).all()
 
     for user in users:
-        pass
-
-    return render_template('chats.html',users=users)
+        room = get_room_name(current_user.username,user.username)
+        messages = Message.query.filter(
+            or_(
+                and_(Message.sender_id == current_user.id, Message.recipient_id == user.id),
+                and_(Message.sender_id == user.id, Message.recipient_id == current_user.id)
+            )
+        ).order_by(Message.timestamp.asc()).all()
+        messages_data=[]
+        for message in messages:
+            sender = User.query.get(message.sender_id)
+            sender_username = sender.username if sender else "Unknown"
+            messages_data.append({
+                'id': message.id,
+                'sender': sender.username,
+                'body': message.body,
+                'timestamp': message.timestamp.strftime('%Y-%m-%d %H:%M:%S')
+            })
+        last_dict=messages_data[-1]
+        last_message=last_dict['body']
+        timing_last_messages=last_dict['timestamp']
+        last_sender=last_dict['sender']
+    return render_template('chats.html',users=users,room=room,last_message=last_message,
+                           timing_last_messages=timing_last_messages,last_sender=last_sender)
 
 
 @app.route("/chat/<recipient_username>", methods=['GET', 'POST'])
@@ -147,6 +167,7 @@ def get_room_name(user1,user2):
 def join(message):
     recipient = User.query.filter_by(username=message['recipient']).first()
     room = get_room_name(current_user.username, message['recipient'])
+    print(f"ROOM:{room}")
     if not room:
         abort(403)
     join_room(room)
