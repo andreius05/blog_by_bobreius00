@@ -42,6 +42,7 @@ class User(db.Model, UserMixin):
                                     back_populates='sender', lazy=True)
     received_messages = db.relationship('Message', foreign_keys='Message.recipient_id',
                                         back_populates='recipient', lazy=True)
+    groups=db.relationship('Group', secondary='user_groups', back_populates='members')
     def follow(self, user):
         if not self.is_following(user):
             f = Follow(follower=self, followed=user)
@@ -105,19 +106,26 @@ class Post(db.Model):
     post_likes = db.relationship('Like', back_populates='post', lazy='dynamic')
 
     def is_liking(self, user):
-        return Like.query.filter_by(post_id=self.id, man_that_likes_id=user.id).first() is not None
-
+        if user.is_authenticated:
+            return Like.query.filter_by(post_id=self.id, man_that_likes_id=user.id).first() is not None
+        return False
     def like(self, user):
-        if not self.is_liking(user):
-            like = Like(man_that_likes=user, post=self)
-            db.session.add(like)
-            db.session.commit()
+        if user.is_authenticated:
+            if not self.is_liking(user):
+                like = Like(man_that_likes=user, post=self)
+                db.session.add(like)
+                db.session.commit()
+        else:
+            pass
 
     def unlike(self, user):
-        like = Like.query.filter_by(post_id=self.id, man_that_likes_id=user.id).first()
-        if like:
-            db.session.delete(like)
-            db.session.commit()
+        if user.is_authenticated:
+            like = Like.query.filter_by(post_id=self.id, man_that_likes_id=user.id).first()
+            if like:
+                db.session.delete(like)
+                db.session.commit()
+        else:
+            pass
 
     def get_likers(self):
         likes = Like.query.filter_by(post_id=self.id).all()
@@ -146,3 +154,16 @@ class Like(db.Model):
 
     def __repr__(self):
         return f"Like('{self.man_that_likes_id}', '{self.post_id}')"
+
+
+class Group(db.Model):
+    id=db.Column(db.Integer,primary_key=True)
+    name=db.Column(db.String(80),nullable=False)
+    members=db.relationship('User',secondary='user_groups',back_populates='groups')
+
+
+
+user_groups=db.Table('user_groups',
+                     db.Column('user_id',db.Integer,db.ForeignKey('user.id'),primary_key=True)
+                     ,db.Column('group_id',db.Integer,db.ForeignKey('group.id'),primary_key=True))
+

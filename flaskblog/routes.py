@@ -1,16 +1,19 @@
 import datetime
+import time
 
 from flaskblog import app,db,bcrypt,login_manager,socketio,mail,cache
 from flask import render_template,url_for,redirect,flash,abort,request,session
 from flask_login import current_user,login_user,login_required,logout_user
-from flaskblog.models import User,Post,Message,Comment
-from flaskblog.forms import RegisterForm,LoginForm,UpdateAccount,CreatePost,UpdPost,SearchForm,MessageForm,ResetPasswordFormRequest,ResetPasswordForm,CommentForm,CommentUpdateForm
+from flaskblog.models import User,Post,Message,Comment,Group
+from flaskblog.forms import (RegisterForm,LoginForm,UpdateAccount,CreatePost,UpdPost,SearchForm,MessageForm,ResetPasswordFormRequest
+,ResetPasswordForm,CommentForm,CommentUpdateForm,CreateGroupForm)
 from flask_socketio import join_room,leave_room,emit
 import secrets
 import os
 from  PIL import Image
 from sqlalchemy import or_,and_
 from flaskblog.emails import send_email
+
 
 #ERRRORS
 @app.errorhandler(404)
@@ -29,6 +32,8 @@ def server_bug_error(error):
 #ERRORS
 @app.route("/")
 def home():
+    current_page=request.path
+    print(f"THIS IS CURRENT PAGE:{current_page}")
     page = request.args.get('page', 1, type=int)
     posts = Post.query.order_by(Post.date_posted.desc()).paginate(per_page=5, page=page)
     return render_template('home.html',posts=posts)
@@ -155,6 +160,8 @@ def chats(username):
 @app.route("/chat/<recipient_username>", methods=['GET', 'POST'])
 @login_required
 def chat(recipient_username):
+    current_page=request.path
+    print(f"CURRENT PAGE:{current_page}")
     recipient = User.query.filter_by(username=recipient_username).first()
     return render_template('chat.html', recipient=recipient)
 
@@ -194,6 +201,7 @@ def join(message):
 
 @socketio.on('text', namespace='/chat')
 def text(message):
+    current_page=request.path
     recipient=User.query.filter_by(username=message['recipient']).first()
     room = get_room_name(current_user.username, message['recipient'])
 
@@ -207,17 +215,7 @@ def text(message):
     db.session.commit()
 
     emit('message', {'msg': f'{current_user.username}: {message["msg"]}'}, room=room)
-    if socketio.server.manager.rooms.get(room):
-        print("HE is IN THE FUCKING CHAT")
-        emit('message', {'msg': f'{current_user.username}: {message["msg"]}'}, room=room)
-    else:
-        emit('new_notification', {'msg': f'Новое сообщение от {current_user.username}'}, room=recipient.username)
 
-@socketio.on('leave', namespace='/chat')
-def leave(message):
-    room = get_room_name(current_user.username, message['recipient'])
-    leave_room(room)
-    emit('status', {'msg': f'{current_user.username} has left the room.'}, room=room)
 
 
 def save_pic(pic):
@@ -408,11 +406,6 @@ def like_post(post_id):
     return redirect(url_for('post',post_id=post_id))
 
 
-@app.route("/like_post_home/<int:post_id>",methods=['GET','POST'])
-def like_post_home(post_id):
-    post = Post.query.get_or_404(post_id)
-    post.like(current_user)
-    return redirect(url_for('home'))
 
 
 @app.route("/unlike_post_home/<int:post_id>",methods=['GET','POST'])
@@ -430,11 +423,7 @@ def unlike_post(post_id):
 
 
 
-@app.route("/unlike_post_home/<int:post_id>")
-def unlike_post_home(post_id):
-    post=Post.query.get_or_404(post_id)
-    post.unlike(current_user)
-    return redirect(url_for('home'))
+
 
 @app.route("/post_likes/<int:post_id>")
 def post_likes(post_id):
@@ -463,3 +452,41 @@ def commentDelete(post_id):
     db.session.commit()
     flash('Your comment was deleted ','success')
     return redirect(url_for('post',post_id=post_id))
+
+
+
+
+@app.route('/create_group',methods=['GET','POST'])
+@login_required
+def create_group():
+    user=User.query.filter_by(username=current_user.username).first()
+    users=[f.followed for f in user.followed.all()]
+    form=CreateGroupForm()
+    if form.validate_on_submit():
+        print('VALIIIIIIDATEEEED')
+        group=Group(name=form.group_name.data)
+        db.session.add(group)
+        db.session.commit()
+
+        selected_users=User.query.filter(User.id.in_(form.add_members.data)).all()
+        print(f"SELECTEEED USERSSS:{selected_users}")
+
+        for sl_user in selected_users:
+            print(f"IM SELECTEEED :{sl_user}")
+            group.members.append(sl_user)
+        db.session.commit()
+        flash('You are successfully created group','success')
+        return redirect(url_for('chat_group',id=group.id))
+    else:
+        print("VALIDATION FAILED", form.errors, request.form)
+    return render_template('create_group.html',form=form,users=users)
+
+
+
+@app.route("/chat_group/<int:id>")
+def chat_group(id):
+    group=Group.query.get_or_404(id)
+    print(group)
+    users=group.members
+    print(f"USERS:{users}")
+    return render_template('chat_group.html',users=users)

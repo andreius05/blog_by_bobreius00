@@ -1,10 +1,11 @@
 from flask_wtf import FlaskForm
 from wtforms.validators import DataRequired,Email,equal_to,Length,ValidationError
-from wtforms import StringField,IntegerField,SubmitField,BooleanField,PasswordField,SelectField,TextAreaField
+from wtforms import (StringField,IntegerField,SubmitField,BooleanField,
+                     PasswordField,SelectField,TextAreaField,SelectMultipleField)
 from flaskblog.models import User
 from flask_wtf.file import FileField,FileAllowed
 from flask_login import current_user
-
+from wtforms.widgets import ListWidget, CheckboxInput
 
 class ResetPasswordForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
@@ -96,3 +97,23 @@ class CommentForm(FlaskForm):
 class CommentUpdateForm(FlaskForm):
     content=TextAreaField('content',validators=[DataRequired()])
     submit=SubmitField('Update')
+
+
+class CreateGroupForm(FlaskForm):
+    group_name=StringField('Group name',validators=[DataRequired()])
+    add_members=SelectMultipleField(
+        'Add Members',
+        coerce=int,
+        widget=ListWidget(prefix_label=False),
+        option_widget=CheckboxInput()
+    )
+    submit=SubmitField('Create')
+
+
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args, **kwargs)
+        user=User.query.filter_by(username=current_user.username).first()
+        if user:
+            self.add_members.choices = [(f.followed.id, f.followed.username) for f in user.followed]
+        else:
+            self.add_members.choices=[]
