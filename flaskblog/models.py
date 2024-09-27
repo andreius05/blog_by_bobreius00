@@ -1,5 +1,4 @@
 from datetime import datetime, timedelta
-from authlib.jose import jwt
 from flaskblog import db, login_manager, app
 from flask_login import UserMixin
 from itsdangerous import URLSafeTimedSerializer as Serializer

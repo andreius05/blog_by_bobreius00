@@ -280,7 +280,7 @@ def post(post_id):
             db.session.add(comment)
             db.session.commit()
             return redirect(url_for('post',post_id=post_id))
-        flash('You need to be logged to comment','success')
+        flash('You need to be logged to comment','danger')
     comments = post.comments.order_by(Comment.timestamp.asc()).all()
     return render_template('post.html',post=post,comments=comments,form=form)
 
@@ -394,12 +394,14 @@ def followed(username):
     return render_template('user_list.html', users=users, user=user)
 
 @app.route("/like_post_home/<int:post_id>")
+@login_required
 def like_post_home(post_id):
     post=Post.query.get(post_id)
     post.like(current_user)
     return redirect(url_for('home'))
 
 @app.route("/like_post/<int:post_id>")
+@login_required
 def like_post(post_id):
     post=Post.query.get_or_404(post_id)
     post.like(current_user)
@@ -409,6 +411,7 @@ def like_post(post_id):
 
 
 @app.route("/unlike_post_home/<int:post_id>",methods=['GET','POST'])
+@login_required
 def unlike_post_home(post_id):
     post = Post.query.get_or_404(post_id)
     post.unlike(current_user)
@@ -416,6 +419,7 @@ def unlike_post_home(post_id):
 
 
 @app.route("/unlike_post/<int:post_id>")
+@login_required
 def unlike_post(post_id):
     post=Post.query.get_or_404(post_id)
     post.unlike(current_user)
@@ -426,6 +430,7 @@ def unlike_post(post_id):
 
 
 @app.route("/post_likes/<int:post_id>")
+@login_required
 def post_likes(post_id):
     post=Post.query.get_or_404(post_id)
     likers=post.get_likers()
@@ -433,6 +438,7 @@ def post_likes(post_id):
 
 
 @app.route("/commentUpdate/<int:post_id>",methods=['GET','POST'])
+@login_required
 def commentUpdate(post_id):
     form=CommentUpdateForm()
     comment = Comment.query.get_or_404(post_id)
@@ -446,6 +452,7 @@ def commentUpdate(post_id):
 
 
 @app.route("/commentDelete/<int:post_id>")
+@login_required
 def commentDelete(post_id):
     comment=Comment.query.get(post_id)
     db.session.delete(comment)
@@ -484,9 +491,26 @@ def create_group():
 
 
 @app.route("/chat_group/<int:id>")
+@login_required
 def chat_group(id):
     group=Group.query.get_or_404(id)
     print(group)
     users=group.members
     print(f"USERS:{users}")
     return render_template('chat_group.html',users=users)
+
+
+@app.route("/all_post_comments/<int:post_id>",methods=['GET','POST'])
+def all_post_comments(post_id):
+    post=Post.query.get(post_id)
+    form=CommentForm()
+    if form.validate_on_submit():
+        if current_user.is_authenticated:
+            comment=Comment(author_id=current_user.id,content=form.content.data,post_id=post_id)
+            db.session.add(comment)
+            db.session.commit()
+            return redirect(url_for('post',post_id=post_id))
+        flash('You need to be logged to comment','danger')
+    comments = post.comments.order_by(Comment.timestamp.asc()).all()
+    print(comments)
+    return render_template('all_post_comments.html',comments=comments,form=form)

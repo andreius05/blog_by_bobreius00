@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block content %}
+<div><section class="content-section">
+    <h3>Comments:</h3>
+    {% for comment in comments %}
+        <article class="media content-section">
+            <img class="rounded-circle article-img" src="{{ url_for('static', filename='pictures/default.jpg') }}" alt="">
+            <div class="media-body">
+                <div class="article-metadata">
+                    <a class="mr-2" href="{{ url_for('user_info',username=comment.author.username) }}">{{ comment.author.username }}</a>
+                    <small class="text-muted">{{ comment.timestamp.strftime('%Y-%m-%d') }}</small>
+                </div>
+                <p class="article-content">{{ comment.content }}</p>
+            </div>
+            {% if comment.author.username==current_user.username %}
+        <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{url_for('commentUpdate', post_id=post.id)}}">Update</a>
+        <a class="del btn-secondary btn-sm mt-1 mb-1" href="{{url_for('commentDelete', post_id=post.id)}}">Delete</a>
+        </article>
+
+    {% else %}
+    {% endif %}
+    {% else %}
+        <p>No comments yet. Be the first to comment!</p>
+
+    {% endfor %}</div>
+
+    <footer class="content-section">
+        <h3>Leave a Comment:</h3>
+        <form method="POST" action="">
+            {{ form.hidden_tag() }}
+            <div class="form-group">
+                {{ form.content.label(class="form-control-label") }}
+                {{ form.content(class="form-control", rows="3") }}
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </footer>
+{% endblock %}

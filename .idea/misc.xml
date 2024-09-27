@@ -3,7 +3,7 @@
   <component name="Black">
     <option name="sdkName" value="Python 3.12 (social-network)" />
   </component>
-  <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.12 (andreius_blog-main)" project-jdk-type="Python SDK" />
+  <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.11 (flask_social_network)" project-jdk-type="Python SDK" />
   <component name="PyCharmProfessionalAdvertiser">
     <option name="shown" value="true" />
   </component>

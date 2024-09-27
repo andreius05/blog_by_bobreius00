@@ -10,9 +10,8 @@
     </div>
     <h2><a class="article-title" href="{{ url_for('post',post_id=post.id) }}">{{ post.title }}</a></h2>
     <p class="article-content">{{ post.content }}</p>
-<button class="comment-button">
-    <i class="fa fa-comment"></i> {{ post.comments.count() }}
-</button>
+    
+    <a href="{{ url_for('all_post_comments',post_id=post.id) }}" class="fa fa-comment">Commetns:{{ post.comments.count() }}</a> <br>
                     {% if post.is_liking(current_user) %}
                         <a class="like-icon" href="{{ url_for('unlike_post_home', post_id=post.id) }}">&#10084;Unlike</a>
                         <a href="{{ url_for('post_likes',post_id=post.id) }}" class="likes-count">{{ post.post_likes.count() }}</a>
