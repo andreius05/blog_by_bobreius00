@@ -36,6 +36,8 @@ def home():
     print(f"THIS IS CURRENT PAGE:{current_page}")
     page = request.args.get('page', 1, type=int)
     posts = Post.query.order_by(Post.date_posted.desc()).paginate(per_page=5, page=page)
+    users=User.query.all()
+    print(users)
     return render_template('home.html',posts=posts)
 
 
@@ -98,7 +100,12 @@ def login():
         return redirect(url_for('home'))
     form=LoginForm()
     if form.validate_on_submit():
-        user=User.query.filter_by(email=form.email.data).first()
+        user=User.query.filter(
+            or_(
+                User.username==form.login.data,
+                User.email==form.login.data
+            )
+        ).first()
         if user and bcrypt.check_password_hash(user.password,form.password.data):
             login_user(user)
             flash('You are successful registered','success')
@@ -130,31 +137,36 @@ def chats(username):
         if recipient_id!=current_user.id:
             user_ids.add(recipient_id)
     users = User.query.filter(User.id.in_(user_ids)).all()
-
-    for user in users:
-        room = get_room_name(current_user.username,user.username)
-        messages = Message.query.filter(
-            or_(
-                and_(Message.sender_id == current_user.id, Message.recipient_id == user.id),
-                and_(Message.sender_id == user.id, Message.recipient_id == current_user.id)
-            )
-        ).order_by(Message.timestamp.asc()).all()
-        messages_data=[]
-        for message in messages:
-            sender = User.query.get(message.sender_id)
-            sender_username = sender.username if sender else "Unknown"
-            messages_data.append({
-                'id': message.id,
-                'sender': sender.username,
-                'body': message.body,
-                'timestamp': message.timestamp.strftime('%Y-%m-%d %H:%M:%S')
-            })
-        last_dict=messages_data[-1]
-        last_message=last_dict['body']
-        timing_last_messages=last_dict['timestamp']
-        last_sender=last_dict['sender']
-    return render_template('chats.html',users=users,room=room,last_message=last_message,
-                           timing_last_messages=timing_last_messages,last_sender=last_sender)
+    if users:
+        for user in users:
+            room = get_room_name(current_user.username,user.username)
+            messages = Message.query.filter(
+                or_(
+                    and_(Message.sender_id == current_user.id, Message.recipient_id == user.id),
+                    and_(Message.sender_id == user.id, Message.recipient_id == current_user.id)
+                )
+            ).order_by(Message.timestamp.asc()).all()
+            messages_data=[]
+            for message in messages:
+                sender = User.query.get(message.sender_id)
+                sender_username = sender.username if sender else "Unknown"
+                messages_data.append({
+                    'id': message.id,
+                    'sender': sender.username,
+                    'body': message.body,
+                    'timestamp': message.timestamp.strftime('%Y-%m-%d %H:%M:%S')
+                })
+            last_dict=messages_data[-1]
+            last_message=last_dict['body']
+            
+            timing_last_messages=last_dict['timestamp']
+            last_sender=last_dict['sender']
+            
+        return render_template('chats.html',users=users,room=room,last_message=last_message,
+                            timing_last_messages=timing_last_messages,last_sender=last_sender)
+    else:
+        flash('You have no friends hahahaha','danger')
+        return redirect(url_for('search'))
 
 
 @app.route("/chat/<recipient_username>", methods=['GET', 'POST'])
@@ -393,6 +405,7 @@ def followed(username):
     users = [f.followed for f in user.followed.all()]
     return render_template('user_list.html', users=users, user=user)
 
+
 @app.route("/like_post_home/<int:post_id>")
 @login_required
 def like_post_home(post_id):
@@ -437,11 +450,11 @@ def post_likes(post_id):
     return render_template('post_likes.html',likers=likers,post=post)
 
 
-@app.route("/commentUpdate/<int:post_id>",methods=['GET','POST'])
+@app.route("/commentUpdate/<int:comment_id>/<int:post_id>",methods=['GET','POST'])
 @login_required
-def commentUpdate(post_id):
+def commentUpdate(comment_id,post_id):
     form=CommentUpdateForm()
-    comment = Comment.query.get_or_404(post_id)
+    comment = Comment.query.get_or_404(comment_id)
     if form.validate_on_submit():
         comment.content=form.content.data
         db.session.commit()
@@ -451,13 +464,16 @@ def commentUpdate(post_id):
     return render_template('commentUpdate.html',post_id=post_id,form=form,comment=comment)
 
 
-@app.route("/commentDelete/<int:post_id>")
+@app.route("/commentDelete/<int:post_id>/<int:comment_id>")
 @login_required
-def commentDelete(post_id):
-    comment=Comment.query.get(post_id)
-    db.session.delete(comment)
-    db.session.commit()
-    flash('Your comment was deleted ','success')
+def commentDelete(post_id,comment_id):
+    comment=Comment.query.get(comment_id)
+    if comment:
+        db.session.delete(comment)
+        db.session.commit()
+        flash('Your comment was deleted ','success')
+    else:
+        flash('Comment was not found ','danger')
     return redirect(url_for('post',post_id=post_id))
 
 

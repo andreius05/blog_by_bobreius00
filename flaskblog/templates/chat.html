@@ -8,7 +8,7 @@
 
 <script type="text/javascript">
 $(document).ready(function() {
-    const socket = io('http://127.0.0.1:5000/chat');
+    const socket = io(window.location.origin + '/chat');
 
     socket.on('connect', function() {
         var recipientUsername = "{{ recipient.username }}";

@@ -35,17 +35,7 @@
     </article>
 
     <!-- Форма для добавления комментария -->
-    <section class="content-section">
-        <h3>Leave a Comment:</h3>
-        <form method="POST" action="">
-            {{ form.hidden_tag() }}
-            <div class="form-group">
-                {{ form.content.label(class="form-control-label") }}
-                {{ form.content(class="form-control", rows="3") }}
-            </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
-    </section>
+
 
 
     <section class="content-section">
@@ -61,8 +51,8 @@
                     <p class="article-content">{{ comment.content }}</p>
                 </div>
                 {% if comment.author.username==current_user.username %}
-            <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{url_for('commentUpdate', post_id=post.id)}}">Update</a>
-            <a class="del btn-secondary btn-sm mt-1 mb-1" href="{{url_for('commentDelete', post_id=post.id)}}">Delete</a>
+            <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{url_for('commentUpdate', comment_id=comment.id,post_id=post.id)}}">Update</a>
+            <a class="del btn-secondary btn-sm mt-1 mb-1" href="{{url_for('commentDelete', comment_id=comment.id,post_id=post.id)}}">Delete</a>
             </article>
 
         {% else %}
@@ -74,4 +64,17 @@
 
     </section>
 
+
+
+    <section class="content-section">
+        <h3>Leave a Comment:</h3>
+        <form method="POST" action="">
+            {{ form.hidden_tag() }}
+            <div class="form-group">
+                {{ form.content.label(class="form-control-label") }}
+                {{ form.content(class="form-control", rows="3") }}
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </section>
 {% endblock %}

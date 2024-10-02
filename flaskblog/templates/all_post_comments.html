@@ -13,8 +13,8 @@
                 <p class="article-content">{{ comment.content }}</p>
             </div>
             {% if comment.author.username==current_user.username %}
-        <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{url_for('commentUpdate', post_id=post.id)}}">Update</a>
-        <a class="del btn-secondary btn-sm mt-1 mb-1" href="{{url_for('commentDelete', post_id=post.id)}}">Delete</a>
+        <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{url_for('commentUpdate',comment_id=comment.id, post_id=comment.post_id)}}">Update</a>
+        <a class="del btn-secondary btn-sm mt-1 mb-1" href="{{url_for('commentDelete',comment_id=comment.id, post_id=comment.post_id)}}">Delete</a>
         </article>
 
     {% else %}
