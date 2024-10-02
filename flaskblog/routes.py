@@ -4,7 +4,7 @@ import time
 from flaskblog import app,db,bcrypt,login_manager,socketio,mail,cache
 from flask import render_template,url_for,redirect,flash,abort,request,session
 from flask_login import current_user,login_user,login_required,logout_user
-from flaskblog.models import User,Post,Message,Comment,Group
+from flaskblog.models import User,Post,Message,Comment,Group,Room
 from flaskblog.forms import (RegisterForm,LoginForm,UpdateAccount,CreatePost,UpdPost,SearchForm,MessageForm,ResetPasswordFormRequest
 ,ResetPasswordForm,CommentForm,CommentUpdateForm,CreateGroupForm)
 from flask_socketio import join_room,leave_room,emit
@@ -12,7 +12,6 @@ import secrets
 import os
 from  PIL import Image
 from sqlalchemy import or_,and_
-from flaskblog.emails import send_email
 
 
 #ERRRORS
@@ -137,9 +136,10 @@ def chats(username):
         if recipient_id!=current_user.id:
             user_ids.add(recipient_id)
     users = User.query.filter(User.id.in_(user_ids)).all()
+    user_chats=[]
     if users:
         for user in users:
-            room = get_room_name(current_user.username,user.username)
+            room_name = get_room_name(current_user.username,user.username)
             messages = Message.query.filter(
                 or_(
                     and_(Message.sender_id == current_user.id, Message.recipient_id == user.id),
@@ -156,11 +156,24 @@ def chats(username):
                     'body': message.body,
                     'timestamp': message.timestamp.strftime('%Y-%m-%d %H:%M:%S')
                 })
-            last_dict=messages_data[-1]
-            last_message=last_dict['body']
             
-            timing_last_messages=last_dict['timestamp']
-            last_sender=last_dict['sender']
+
+            if messages_data:
+                last_message_data=messages_data[-1]
+                user_chat_info={
+                    'user':user,
+                    'room_name':room_name,
+                    'last_message':last_message_data['body'],
+                    'last_message_time':last_message_data['timestamp'],
+                    'last_message_sender':last_message_data['sender']
+
+                }
+                user_chats.append(user_chat_info)
+        return render_template('chats.html',user_chats=user_chats)
+
+
+            
+            
             
         return render_template('chats.html',users=users,room=room,last_message=last_message,
                             timing_last_messages=timing_last_messages,last_sender=last_sender)

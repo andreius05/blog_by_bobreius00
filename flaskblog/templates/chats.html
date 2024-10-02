@@ -1,14 +1,14 @@
 {% extends "base.html" %}
 {% block content %}
-{% for user in users %}
+{% for user_chat in user_chats %}
     <article class="media content-section">
-        <img class="rounded-circle article-img" src="{{ url_for('static', filename='pictures/' + user.image_file) }}" alt="">
+        <img class="rounded-circle article-img" src="{{ url_for('static', filename='pictures/' + user_chat['user'].image_file) }}" alt="">
         <div class="media-body">
             <div class="article-metadata">
-                <a class="mr-2" href="{{ url_for('user_info', username=user.username) }}">{{ user.username }}</a>
+                <a class="mr-2" href="{{ url_for('user_info', username=user_chat['user'].username) }}">{{ user_chat['user'].username }}</a>
             </div>
 
-            <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('chat',recipient_username=user.username) }}">{{ last_sender }}:{{ last_message }}</a>
+            <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('chat',recipient_username=user_chat['user'].username) }}">{{ user_chat['last_message_sender'] }}:{{ user_chat['last_message'] }}</a>
         </div>
     </article>
 {% endfor %}
