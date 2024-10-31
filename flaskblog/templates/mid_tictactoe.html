@@ -1,0 +1,149 @@
+{% extends "base.html"%}
+{% block content %}
+<style>
+        .board {
+            display: grid;
+            grid-template-columns: repeat(3, 100px);
+            grid-template-rows: repeat(3, 100px);
+            gap: 5px;
+            margin: 20px auto;
+            width: 315px;
+        }
+        .cell {
+            width: 100px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2em;
+            cursor: pointer;
+            background-color: #e0e0e0;
+        }
+        .winner {
+            font-size: 1.5em;
+            color: green;
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+
+<body>
+    <h1>Tic Tac Toe</h1>
+    <div id="board" class="board"></div>
+    <p id="winner" class="winner"></p>
+    <button onclick="restartGame()">Restart</button>
+
+    <script>
+        let board = [
+            [null, null, null],
+            [null, null, null],
+            [null, null, null]
+        ];
+        let currentPlayer = "X";
+
+        function renderBoard() {
+            const boardElement = document.getElementById("board");
+            boardElement.innerHTML = '';
+            board.forEach((row, rowIndex) => {
+                row.forEach((cell, colIndex) => {
+                    const cellDiv = document.createElement("div");
+                    cellDiv.classList.add("cell");
+                    cellDiv.innerText = cell || '';
+                    cellDiv.onclick = () => makeMove(rowIndex, colIndex);
+                    boardElement.appendChild(cellDiv);
+                });
+            });
+        }
+
+        async function makeMove(row, col) {
+            if (!board[row][col] && !document.getElementById("winner").innerText) {
+                board[row][col] = currentPlayer;
+                renderBoard();
+                currentPlayer = currentPlayer === "X" ? "O" : "X";
+
+                if (checkWinner()) return;
+
+                if (currentPlayer === "O") {
+                    const aiMove = await getAIMove();
+                    if (aiMove) {
+                        board[aiMove.row][aiMove.col] = "O";
+                        currentPlayer = "X";
+                        renderBoard();
+                        checkWinner();
+                    }
+                }
+            }
+        }
+
+        async function getAIMove() {
+    try {
+        const response = await fetch("/game/ai_move_mid", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json" // Ensures JSON format
+            },
+            body: JSON.stringify({ board: board }) // Converts board to JSON string
+        });
+        return await response.json();
+    } catch (error) {
+        console.error("Error getting AI move:", error);
+    }
+}
+
+
+        function checkWinner() {
+            const winnerText = document.getElementById("winner");
+            const winner = getWinner();
+            if (winner) {
+                winnerText.innerText = `Winner: ${winner}`;
+                return true;
+            } else if (board.flat().every(cell => cell !== null)) {
+                winnerText.innerText = "It's a tie!";
+                return true;
+            }
+            return false;
+        }
+
+        function getWinner() {
+            const lines = [
+                // Rows
+                [board[0][0], board[0][1], board[0][2]],
+                [board[1][0], board[1][1], board[1][2]],
+                [board[2][0], board[2][1], board[2][2]],
+                // Columns
+                [board[0][0], board[1][0], board[2][0]],
+                [board[0][1], board[1][1], board[2][1]],
+                [board[0][2], board[1][2], board[2][2]],
+                // Diagonals
+                [board[0][0], board[1][1], board[2][2]],
+                [board[0][2], board[1][1], board[2][0]]
+            ];
+            for (const line of lines) {
+                if (line[0] && line[0] === line[1] && line[1] === line[2]) {
+                    return line[0];
+                }
+            }
+            return null;
+        }
+
+        function restartGame() {
+            board = [
+                [null, null, null],
+                [null, null, null],
+                [null, null, null]
+            ];
+            currentPlayer = "X";
+            document.getElementById("winner").innerText = '';
+            renderBoard();
+        }
+
+        renderBoard();
+    </script>
+
+
+
+
+
+
+
+{% endblock %}

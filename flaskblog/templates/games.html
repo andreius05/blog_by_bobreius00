@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+{% for game in games %}
+    <a href="{{ url_for('game',name=game.name) }}">{{game.name}}</a>
+{% endfor %}
+
+
+
+
+
+{% endblock %}

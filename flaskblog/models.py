@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta
-from flaskblog import db, login_manager, app
+from . import db, login_manager, app
 from flask_login import UserMixin
 from itsdangerous import URLSafeTimedSerializer as Serializer
 import jwt
@@ -174,3 +174,15 @@ class Room(db.Model):
     last_message_body=db.Column(db.Text)
     last_message_sender=db.Column(db.String(240))
     last_message_time=db.Column(db.DateTime,nullable=False)
+
+
+
+class Game(db.Model):
+    id = db.Column(db.Integer,primary_key=True)
+    name=db.Column(db.String(120),unique=True,index=True)
+    favorites_game=db.Column(db.Integer)
+    guy_that_likes_game_id=db.Column(db.Integer,db.ForeignKey('user.id'))
+
+
+    def __repr__(self):
+        return f"Name:{self.name}"

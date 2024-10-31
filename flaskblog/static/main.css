@@ -1,177 +1,175 @@
 body {
-  background: #1c1c1c; /* Темный фон для минималистичного вида */
-  color: #f8f8f8; /* Светлый текст для контраста */
-  margin-top: 6rem;
-  font-family: 'Roboto', sans-serif; /* Современный шрифт */
-  line-height: 1.8; /* Увеличенный межстрочный интервал для читабельности */
+    background: #f0f0f0; /* Светлый фон для минималистичного вида */
+    color: #333; /* Темный текст для контраста */
+    margin-top: 6rem;
+    font-family: 'Arial', sans-serif; /* Современный шрифт */
+    line-height: 1.6; /* Увеличенный межстрочный интервал */
 }
 
 h1, h2, h3, h4, h5, h6 {
-  color: #ffffff; /* Белый цвет заголовков */
-  margin-bottom: 1.5rem;
-  font-weight: 700; /* Более жирный шрифт */
+    color: #2c3e50; /* Темно-синий цвет заголовков */
+    margin-bottom: 1.2rem;
+    font-weight: 700; /* Более жирный шрифт */
 }
 
 .bg-steel {
-  background-color: #2b2b2b; /* Темно-серый для навбара */
+    background-color: #34495e; /* Темно-синий для навбара */
 }
 
 .site-header .navbar-nav .nav-link {
-  color: #b0b0b0; /* Серый цвет для ссылок */
-  font-weight: 600;
-  font-size: 1.2rem; /* Увеличенный размер шрифта для ссылок */
-  transition: color 0.3s ease;
+    color: #ecf0f1; /* Светлый цвет для ссылок */
+    font-weight: 600;
+    font-size: 1.1rem; /* Уменьшенный размер шрифта для ссылок */
+    transition: color 0.3s ease;
 }
 
 .site-header .navbar-nav .nav-link:hover {
-  color: #ffffff; /* Белый цвет при наведении */
+    color: #f39c12; /* Оранжевый цвет при наведении */
 }
 
 .site-header .navbar-nav .nav-link.active {
-  font-weight: 700; /* Более жирный шрифт для активных ссылок */
+    font-weight: 700; /* Более жирный шрифт для активных ссылок */
 }
 
 .content-section {
-  background: #2e2e2e; /* Темно-серый для контента */
-  padding: 40px 50px; /* Увеличенные отступы */
-  border: 1px solid #444444; /* Более темная рамка */
-  border-radius: 10px; /* Более округлые углы */
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3); /* Глубокая тень */
-  margin-bottom: 40px;
+    background: #ffffff; /* Белый фон для контента */
+    padding: 30px; /* Уменьшенные отступы */
+    border: 1px solid #bdc3c7; /* Более светлая рамка */
+    border-radius: 8px; /* Более округлые углы */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Легкая тень */
+    margin-bottom: 30px;
 }
 
 .article-title {
-  color: #f0f0f0; /* Светло-серый для заголовков статей */
-  font-size: 2.5rem; /* Увеличенный размер шрифта */
-  font-weight: 600;
+    color: #2980b9; /* Синий для заголовков статей */
+    font-size: 2rem; /* Увеличенный размер шрифта */
+    font-weight: 600;
 }
 
 a.article-title:hover {
-  color: #ffffff; /* Белый при наведении */
-  text-decoration: underline; /* Подчёркивание для акцента */
+    color: #3498db; /* Более яркий синий при наведении */
+    text-decoration: underline; /* Подчёркивание для акцента */
 }
 
 .article-content {
-  white-space: pre-line;
-  line-height: 1.9; /* Увеличенный межстрочный интервал */
-  font-size: 1.2rem; /* Чуть больший размер текста */
-  color: #d0d0d0; /* Светло-серый текст */
+    line-height: 1.8; /* Увеличенный межстрочный интервал */
+    font-size: 1rem; /* Уменьшенный размер текста */
+    color: #555; /* Темно-серый текст */
 }
 
 .article-img {
-  height: 100px;
-  width: 100px;
-  margin-right: 25px;
-  border-radius: 50%; /* Круглые изображения */
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2); /* Легкая тень */
+    height: 80px; /* Меньший размер для изображений */
+    width: 80px;
+    margin-right: 15px;
+    border-radius: 50%; /* Круглые изображения */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Легкая тень */
 }
 
 .article-metadata {
-  padding-bottom: 12px;
-  margin-bottom: 12px;
-  border-bottom: 1px solid #595959;
-  font-size: 1rem;
-  color: #a0a0a0; /* Серый для метаданных */
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #e0e0e0;
+    font-size: 0.9rem;
+    color: #777; /* Серый для метаданных */
 }
 
 .article-metadata a:hover {
-  color: #ffffff; /* Белый при наведении */
-  text-decoration: none;
-}
-
-.article-svg {
-  width: 35px; /* Увеличенный размер для современных иконок */
-  height: 35px;
-  vertical-align: middle;
-  fill: #b0b0b0; /* Серый для иконок */
+    color: #3498db; /* Яркий синий при наведении */
+    text-decoration: none;
 }
 
 .account-img {
-  height: 175px; /* Больший размер для фото профиля */
-  width: 175px;
-  margin-right: 25px;
-  margin-bottom: 20px;
-  border-radius: 50%;
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    height: 150px; /* Больший размер для фото профиля */
+    width: 150px;
+    margin-right: 20px;
+    margin-bottom: 15px;
+    border-radius: 50%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .account-heading {
-  font-size: 3rem; /* Большой размер шрифта для заголовков аккаунта */
-  color: #ffffff;
-  margin-bottom: 0.8rem;
+    font-size: 2.5rem; /* Уменьшенный размер шрифта для заголовков аккаунта */
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
 }
 
 button, input[type="submit"] {
-  background-color: #444444; /* Серый для кнопок */
-  color: #ffffff;
-  border: none;
-  border-radius: 6px;
-  padding: 12px 25px;
-  font-size: 1.2rem;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+    background-color: #3498db; /* Яркий синий для кнопок */
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
 button:hover, input[type="submit"]:hover {
-  background-color: #5c5c5c; /* Более светлый серый при наведении */
+    background-color: #2980b9; /* Более темный синий при наведении */
 }
 
 form {
-  margin-top: 2.5rem;
+    margin-top: 2rem;
 }
 
 .form-control {
-  background: #2b2b2b; /* Темный фон для полей ввода */
-  border: 1px solid #444444; /* Легкая рамка */
-  border-radius: 6px;
-  padding: 12px;
-  font-size: 1.1rem;
-  color: #f8f8f8; /* Светлый текст */
+    background: #ecf0f1; /* Светлый фон для полей ввода */
+    border: 1px solid #bdc3c7; /* Светлая рамка */
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 1rem;
+    color: #333; /* Темный текст */
 }
 
 .form-control:focus {
-  border-color: #555555; /* Серый цвет рамки при фокусе */
-  box-shadow: 0 0 8px rgba(255, 255, 255, 0.2); /* Легкая тень при фокусе */
+    border-color: #3498db; /* Синий цвет рамки при фокусе */
+    box-shadow: 0 0 5px rgba(52, 152, 219, 0.5); /* Легкая тень при фокусе */
 }
 
 .form-control-label {
-  color: #b0b0b0; /* Серый цвет для меток форм */
-  font-weight: 600;
+    color: #34495e; /* Темно-синий цвет для меток форм */
+    font-weight: 600;
 }
-.modal-title{
-color:black;
+
+.modal-title {
+    color: #2c3e50;
 }
-.modal-body{
-color:black;
+
+.modal-body {
+    color: #333;
 }
+
 select {
     min-width: 200px; /* Задайте подходящее значение */
     padding: 5px;
     font-size: 16px;
 }
-.sent{
-       background-color: #007bff; /* Синий фон для сообщений отправителя */
-        color: white; /* Белый цвет текста для контраста */
-        align-self: flex-end;
-        margin-left: auto;
-        text-align: right;
+
+.sent {
+    background-color: #3498db; /* Синий фон для сообщений отправителя */
+    color: white; /* Белый цвет текста для контраста */
+    align-self: flex-end;
+    margin-left: auto;
+    text-align: right;
 }
-.received{
-         background-color: #ffffff; /* Белый фон для сообщений получателя */
-        color: black; /* Черный цвет текста для контраста */
-        align-self: flex-start;
-        margin-right: auto;
-        text-align: left;
+
+.received {
+    background-color: #ffffff; /* Белый фон для сообщений получателя */
+    color: black; /* Черный цвет текста для контраста */
+    align-self: flex-start;
+    margin-right: auto;
+    text-align: left;
 }
+
 /* Стили для основного контейнера чата */
 #chat-container {
     display: flex;
     flex-direction: column;
     height: 500px; /* Высота контейнера чата */
     overflow-y: auto; /* Прокрутка при переполнении */
-    border: 1px solid #444444; /* Темная граница вокруг чата */
+    border: 1px solid #bdc3c7; /* Светлая граница вокруг чата */
     padding: 10px;
-    background-color: #2e2e2e; /* Темный цвет фона чата для соответствия общей гамме */
+    background-color: #ffffff; /* Белый цвет фона чата */
     border-radius: 5px; /* Закругленные углы контейнера */
 }
 
@@ -181,12 +179,12 @@ textarea#chat {
     height: 100%;
     padding: 10px;
     border: none;
-    background-color: #2e2e2e; /* Темный фон текстового поля */
+    background-color: #ecf0f1; /* Светлый фон текстового поля */
     overflow-y: auto; /* Прокрутка при переполнении */
     border-radius: 5px; /* Закругленные углы */
     font-family: Arial, sans-serif; /* Шрифт текста */
     font-size: 14px; /* Размер шрифта */
-    color: #f8f8f8; /* Светлый текст для контраста */
+    color: #333; /* Темный текст для контраста */
     white-space: pre-wrap; /* Сохраняет пробелы и переносы строк */
 }
 
@@ -195,8 +193,8 @@ textarea#chat {
     margin-bottom: 10px; /* Отступ между сообщениями */
     padding: 10px;
     border-radius: 5px;
-    background-color: #444444; /* Темно-серый фон сообщения */
-    color: #f8f8f8; /* Светлый текст сообщения */
+    background-color: #f7f7f7; /* Светло-серый фон сообщения */
+    color: #333; /* Темный текст сообщения */
     display: flex;
     align-items: center;
 }
@@ -204,7 +202,7 @@ textarea#chat {
 /* Стили для отправителя */
 .message-sender {
     font-weight: bold;
-    color: #00bfff; /* Яркий синий цвет для текста отправителя */
+    color: #3498db; /* Яркий синий цвет для текста отправителя */
 }
 
 /* Стили для временной метки */
@@ -219,8 +217,9 @@ textarea#chat {
     flex: 1; /* Сообщение занимает оставшееся пространство */
     padding: 5px;
     border-radius: 5px;
-    background-color: #444444; /* Темный фон для текста сообщения */
+    background-color: #f0f0f0; /* Светлый фон для текста сообщения */
 }
+
 /* Стили для заголовка чата */
 .chat-header {
     display: flex;
@@ -239,10 +238,11 @@ textarea#chat {
     font-size: 1.5em;
     font-weight: bold;
 }
+
 .comment-button {
     background-color: #f8f9fa; /* Нейтральный светлый цвет */
-    border: 1px solid #007bff; /* Голубая рамка */
-    color: #007bff; /* Цвет текста и иконки */
+    border: 1px solid #3498db; /* Синяя рамка */
+    color: #3498db; /* Цвет текста и иконки */
     font-size: 14px;
     padding: 5px 10px;
     border-radius: 20px; /* Закругленные края */
@@ -257,14 +257,15 @@ textarea#chat {
 }
 
 .comment-button:hover {
-    background-color: #007bff; /* Голубая заливка при наведении */
+    background-color: #3498db; /* Синяя заливка при наведении */
     color: #fff; /* Белый текст при наведении */
-    border-color: #007bff;
+    border-color: #3498db;
 }
 
 .comment-button:hover i.fa-comment {
     color: #fff; /* Белая иконка при наведении */
 }
+
 /* Основной контейнер для лайков */
 .likes-container {
     display: flex;
@@ -275,13 +276,14 @@ textarea#chat {
 /* Иконка лайка */
 .like-icon {
     font-size: 18px; /* Размер иконки */
-    color: #ff4b5c; /* Цвет иконки */
+    color: #e74c3c; /* Цвет иконки */
     margin-right: 5px; /* Отступ справа от иконки */
 }
 
 /* Текст с количеством лайков */
 .likes-count {
     font-size: 14px; /* Размер шрифта */
-    color: red; /* Цвет текста */
+    color: #e74c3c; /* Цвет текста */
     font-weight: bold; /* Жирное начертание текста */
 }
+

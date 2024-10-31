@@ -2,7 +2,7 @@ from flask_wtf import FlaskForm
 from wtforms.validators import DataRequired,Email,equal_to,Length,ValidationError
 from wtforms import (StringField,IntegerField,SubmitField,BooleanField,
                      PasswordField,SelectField,TextAreaField,SelectMultipleField)
-from flaskblog.models import User
+from .models import User
 from flask_wtf.file import FileField,FileAllowed
 from flask_login import current_user
 from wtforms.widgets import ListWidget, CheckboxInput

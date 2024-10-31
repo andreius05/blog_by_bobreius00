@@ -1,11 +1,11 @@
 import datetime
 import time
-
-from flaskblog import app,db,bcrypt,login_manager,socketio,mail,cache
-from flask import render_template,url_for,redirect,flash,abort,request,session
+from .easy_lvl import minimax
+from . import app,db,bcrypt,login_manager,socketio,mail,cache
+from flask import render_template,url_for,redirect,flash,abort,request,session,jsonify
 from flask_login import current_user,login_user,login_required,logout_user
-from flaskblog.models import User,Post,Message,Comment,Group,Room
-from flaskblog.forms import (RegisterForm,LoginForm,UpdateAccount,CreatePost,UpdPost,SearchForm,MessageForm,ResetPasswordFormRequest
+from .models import User,Post,Message,Comment,Group,Game
+from .forms import (RegisterForm,LoginForm,UpdateAccount,CreatePost,UpdPost,SearchForm,MessageForm,ResetPasswordFormRequest
 ,ResetPasswordForm,CommentForm,CommentUpdateForm,CreateGroupForm)
 from flask_socketio import join_room,leave_room,emit
 import secrets
@@ -55,7 +55,7 @@ def reset_password_request():
     if form.validate_on_submit():
        user=User.query.filter_by(email=form.email.data).first()
        if user:
-           send_email(user)
+
            flash('Check the email to reset your password')
            return redirect(url_for('login'))
     return render_template('reset_password_request.html',form=form,user=user)
@@ -543,3 +543,83 @@ def all_post_comments(post_id):
     comments = post.comments.order_by(Comment.timestamp.asc()).all()
     print(comments)
     return render_template('all_post_comments.html',comments=comments,form=form)
+
+@app.route("/create_game",methods=['GET','POST'])
+def create_game():
+    game=Game(name='chess')
+    db.session.add(game)
+    db.session.commit()
+
+    return "Created"
+
+
+@app.route("/delete_game",methods=['GET','POST'])
+def delete_game():
+    game=Game.query.filter_by(name='chess').first()
+    db.session.delete(game)
+    db.session.commit()
+    return f"{game.name} was deleted"
+
+@app.route("/games/<username>")
+def games(username):
+    print(f"GAMES:{Game.query.all()}")
+    games_obj=Game.query.all()
+    games=[names.name for names in games_obj]
+    print(games)
+    return render_template('games.html',games=games_obj)
+
+
+@app.route("/game/<name>",methods=['GET','POST'])
+def game(name):
+    return render_template('choose.html',name=name)
+
+
+@app.route("/easy_lvl")
+def easy_lvl():
+    return render_template('easy_tictactoe.html')
+
+
+@app.route("/mid_lvl")
+def mid_lvl():
+    return render_template('mid_tictactoe.html')
+
+
+@app.route("/hard_lvl")
+def hard_lvl():
+    return render_template('hard_tictactoe.html')
+
+
+@app.route("/game/ai_move_noob", methods=["POST"])
+def ai_move_noob():
+    data = request.get_json()  # Ensure JSON is parsed
+    board = data.get("board")
+
+    # Call the minimax function or other AI logic here
+    ai_action = minimax(board,easy=True)
+
+    # Return the AI's move as JSON
+    return jsonify({"row": ai_action[0], "col": ai_action[1]})
+
+
+@app.route("/game/ai_move_mid", methods=["POST"])
+def ai_move_mid():
+    data = request.get_json()  # Ensure JSON is parsed
+    board = data.get("board")
+
+    # Call the minimax function or other AI logic here
+    ai_action = minimax(board,mid=True)
+
+    # Return the AI's move as JSON
+    return jsonify({"row": ai_action[0], "col": ai_action[1]})
+
+
+@app.route("/game/ai_move_hard", methods=["POST"])
+def ai_move_hard():
+    data = request.get_json()  # Ensure JSON is parsed
+    board = data.get("board")
+
+    # Call the minimax function or other AI logic here
+    ai_action = minimax(board,hard=True)
+
+    # Return the AI's move as JSON
+    return jsonify({"row": ai_action[0], "col": ai_action[1]})
