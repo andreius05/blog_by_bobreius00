@@ -12,6 +12,10 @@ import secrets
 import os
 from  PIL import Image
 from sqlalchemy import or_,and_
+import requests
+
+
+api_key = 'd7dfed5410094f82a4a4e91abf4c8572'
 
 
 #ERRRORS
@@ -623,3 +627,14 @@ def ai_move_hard():
 
     # Return the AI's move as JSON
     return jsonify({"row": ai_action[0], "col": ai_action[1]})
+
+
+@app.route("/get_ip")
+@login_required
+def get_ip():
+    url = f'https://api.ipgeolocation.io/ipgeo?apiKey={api_key}'
+    response = requests.get(url)
+    ip_info  =response.json()
+    ip = ip_info.get('ip')
+    country = ip_info.get('country_name')
+    return f"THIS YOUR IP:{ip},AND YOUR COUNTRY IS:{country}"
